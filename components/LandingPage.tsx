@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Check, Lock, Star, Zap, BarChart2, BookOpen, Layers, ShieldCheck, ChevronDown, ChevronRight, X, CreditCard, FileText, Mail, Copy } from 'lucide-react';
 import { PRODUCTS, TESTIMONIALS, PAIN_POINTS } from '../constants';
 import { MockBackend } from '../services/mockBackend';
-import { Product } from '../types';
+import { Product, PayPalSettings } from '../types';
 
 export const LandingPage: React.FC = () => {
   const { scrollY } = useScroll();
@@ -14,6 +14,11 @@ export const LandingPage: React.FC = () => {
   const [buyingProduct, setBuyingProduct] = useState<Product | null>(null);
   const [showPayPal, setShowPayPal] = useState(false);
   const [showSupportPopup, setShowSupportPopup] = useState(false);
+  const [ppSettings, setPPSettings] = useState<PayPalSettings | null>(null);
+
+  useEffect(() => {
+    MockBackend.getPayPalSettings().then(setPPSettings);
+  }, []);
 
   const handleBuy = (product: Product) => {
     setBuyingProduct(product);
@@ -444,7 +449,9 @@ export const LandingPage: React.FC = () => {
                     <div className="bg-[#003087] p-4 flex justify-between items-center">
                         <span className="text-white font-bold italic text-xl">PayPal</span>
                         <div className="flex gap-2">
-                             <div className="text-white/80 text-xs">Sandbox Mode</div>
+                             <div className="text-white/80 text-xs">
+                                {ppSettings?.mode === 'LIVE' ? 'Secure Checkout' : 'Sandbox Mode'}
+                             </div>
                              <button onClick={closePayPal} className="text-white/80 hover:text-white"><X className="w-5 h-5"/></button>
                         </div>
                     </div>

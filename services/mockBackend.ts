@@ -402,7 +402,7 @@ export const MockBackend = {
           startY: tableStartY,
           head: [['Item Description', 'Type', 'Qty', 'Price']],
           body: [
-              [description, 'Digital License', '1', `€${invoice.subtotal.toFixed(2)}`]
+              [description, 'Digital License', '1', `€${(invoice.subtotal || 0).toFixed(2)}`]
           ],
           theme: 'plain',
           styles: {
@@ -426,19 +426,23 @@ export const MockBackend = {
       // @ts-ignore
       let finalY = doc.lastAutoTable.finalY + 10;
       
+      const safeSubtotal = invoice.subtotal || 0;
+      const safeTax = invoice.tax || 0;
+      const safeTotal = safeSubtotal + safeTax;
+
       doc.setFontSize(10);
       doc.text(`Subtotal:`, 140, finalY, { align: 'right' });
-      doc.text(`€${invoice.subtotal.toFixed(2)}`, 190, finalY, { align: 'right' });
+      doc.text(`€${safeSubtotal.toFixed(2)}`, 190, finalY, { align: 'right' });
       
       finalY += 6;
       doc.text(`Tax:`, 140, finalY, { align: 'right' });
-      doc.text(`€${invoice.tax.toFixed(2)}`, 190, finalY, { align: 'right' });
+      doc.text(`€${safeTax.toFixed(2)}`, 190, finalY, { align: 'right' });
       
       finalY += 8;
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(12);
       doc.text(`Total:`, 140, finalY, { align: 'right' });
-      doc.text(`€${invoice.total.toFixed(2)}`, 190, finalY, { align: 'right' });
+      doc.text(`€${safeTotal.toFixed(2)}`, 190, finalY, { align: 'right' });
 
       finalY += 10;
       doc.setFont('helvetica', 'italic');

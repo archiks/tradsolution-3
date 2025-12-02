@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-// import './index.css'; // Disabled for Preview Mode (Styles handled in index.html)
+// import './index.css'; // Commented out for Preview Mode to avoid 404s
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

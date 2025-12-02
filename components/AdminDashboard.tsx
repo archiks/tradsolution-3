@@ -524,8 +524,8 @@ const EditInvoiceModal: React.FC<{ order: Order, onClose: () => void, onSave: ()
                     <div className="space-y-4 pt-4 border-t border-white/5">
                         <h4 className="text-xs uppercase tracking-widest text-gold-500 font-medium">Amounts & Currency</h4>
                         <div className="grid grid-cols-3 gap-4">
-                            <Input label="Subtotal (€)" type="number" value={invoice.subtotal} onChange={(v) => setInvoice({...invoice, subtotal: parseFloat(v)})} />
-                            <Input label="Tax (€)" type="number" value={invoice.tax} onChange={(v) => setInvoice({...invoice, tax: parseFloat(v)})} />
+                            <Input label="Subtotal (€)" type="number" value={invoice.subtotal} onChange={(v) => setInvoice({...invoice, subtotal: parseFloat(v) || 0})} />
+                            <Input label="Tax (€)" type="number" value={invoice.tax} onChange={(v) => setInvoice({...invoice, tax: parseFloat(v) || 0})} />
                             <Input label="Total (€)" type="number" value={invoice.total} disabled />
                         </div>
                     </div>
@@ -746,6 +746,16 @@ const SettingsView: React.FC = () => {
         setPPSettings({...ppSettings, [key]: val});
     };
 
+    const handleSaveSettings = async () => {
+        if (!ppSettings) return;
+        try {
+            await MockBackend.updatePayPalSettings(ppSettings);
+            alert("Settings Saved Successfully!");
+        } catch (e) {
+            alert("Failed to save settings.");
+        }
+    };
+
     if(!ppSettings) return <div>Loading...</div>;
 
     return (
@@ -815,7 +825,10 @@ const SettingsView: React.FC = () => {
             </section>
 
             <div className="pt-4 flex justify-end">
-                <button className="px-8 py-3 bg-gold-500 text-black font-semibold rounded-xl hover:bg-gold-400 transition-colors shadow-lg shadow-gold-500/10">
+                <button 
+                    onClick={handleSaveSettings}
+                    className="px-8 py-3 bg-gold-500 text-black font-semibold rounded-xl hover:bg-gold-400 transition-colors shadow-lg shadow-gold-500/10"
+                >
                     Save Changes
                 </button>
             </div>
