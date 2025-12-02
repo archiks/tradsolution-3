@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LandingPage } from './components/LandingPage';
 import { AdminDashboard } from './components/AdminDashboard';
-import { Home, LogIn } from 'lucide-react';
+import { Home } from 'lucide-react';
 
 // Simple Router
 enum Route {
@@ -81,10 +81,10 @@ const AdminLogin: React.FC<{ onLogin: (success: boolean) => void }> = ({ onLogin
     setLoading(true);
     // Simulation
     setTimeout(() => {
-      if (email === 'admin@tradsolution.com' && password === 'admin') {
+      if (email === 'admin@tradsolution.com' && password === 'krikucis') {
         onLogin(true);
       } else {
-        alert('Invalid credentials. (Hint: admin@tradsolution.com / admin)');
+        alert('Invalid credentials.');
         setLoading(false);
       }
     }, 1000);
@@ -129,15 +129,6 @@ const AdminLogin: React.FC<{ onLogin: (success: boolean) => void }> = ({ onLogin
             {loading ? 'Authenticating...' : 'Access Dashboard'}
           </button>
         </form>
-
-        <div className="mt-8 pt-6 border-t border-white/5 text-center">
-            <p className="text-xs text-gray-500 mb-2">Demo Credentials</p>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/40 border border-white/10">
-                <code className="text-[11px] text-gold-500 font-mono">admin@tradsolution.com</code>
-                <span className="text-gray-600">/</span>
-                <code className="text-[11px] text-gold-500 font-mono">admin</code>
-            </div>
-        </div>
       </div>
     </div>
   );
